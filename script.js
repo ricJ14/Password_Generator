@@ -88,31 +88,40 @@ var upperCasedCharacters = [
   'Z'
 ];
 
-// Function to prompt user for password options
-function getPasswordOptions() {
+const generateBtn = document.querySelector("#generate");
 
-}
+generateBtn.addEventListener("click", function () {
+  // Prompt for password
+  let length = prompt("Enter the desired length of your password (at least 8 characters but no more than 128):");
+  let lowercase = confirm("Include lowercase characters?");
+  let uppercase = confirm("Include uppercase characters?");
+  let numeric = confirm("Include numeric characters?");
+  let special = confirm("Include special characters ($@%&*, etc)?");
 
-// Function for getting a random element from an array
-function getRandom(arr) {
+  // Validate input
+  if (length < 8 || length > 128) {
+    alert("Invalid length. Please enter a number between 8 and 128.");
+    return;
+  }
+  if (!lowercase && !uppercase && !numeric && !special) {
+    alert("You must select at least one character type.");
+    return;
+  }
 
-}
+  // Generate password
+  let password = "";
+  let charTypes = [];
+  if (lowercase) charTypes = charTypes.concat(lowerCasedCharacters);
+  if (uppercase) charTypes = charTypes.concat(upperCasedCharacters);
+  if (numeric) charTypes = charTypes.concat(numericCharacters);
+  if (special) charTypes = charTypes.concat(specialCharacters);
 
-// Function to generate password with user input
-function generatePassword() {
-
-}
-
-// Get references to the #generate element
-var generateBtn = document.querySelector('#generate');
-
-// Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector('#password');
-
-  passwordText.value = password;
-}
-
-// Add event listener to generate button
-generateBtn.addEventListener('click', writePassword);
+  for (let i = 0; i < length; i++) {
+    let randomIndex = Math.floor(Math.random() * charTypes.length);
+    password += charTypes[randomIndex];
+  }
+  // Display password in textarea 
+  document.querySelector("#password").innerHTML = password;
+  // Display password in alert 
+  alert("Your generated password is: " + password);
+});
